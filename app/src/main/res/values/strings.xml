@@ -2,4 +2,6 @@
     <string name="app_name">GitHubSearch</string>
     <string name="nome_usuario">Nome do usuário</string>
     <string name="confirmar">Confirmar</string>
+    <string name="response_error">erro, por favor tente novamente mais tarde! ):</string>
+    <string name="spUsername">NAME_USER</string>
 </resources>
