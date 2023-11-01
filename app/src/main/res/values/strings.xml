@@ -3,4 +3,5 @@
     <string name="nome_usuario">Nome do usuário</string>
     <string name="confirmar">Confirmar</string>
     <string name="saved_user_local">Salvar usuário</string>
+    <string name="response_error">Algo deu errado, por favor tente novamente mais tarde!</string>
 </resources>
