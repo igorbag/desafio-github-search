@@ -8,11 +8,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import br.com.igorbag.githubsearch.R
 import br.com.igorbag.githubsearch.data.GitHubService
 import br.com.igorbag.githubsearch.domain.Repository
+import br.com.igorbag.githubsearch.ui.adapter.RepositoryAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var btnConfirmar: Button
     lateinit var listaRepositories: RecyclerView
     lateinit var githubApi: GitHubService
+    lateinit var repositoryAdapter: RepositoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +97,6 @@ class MainActivity : AppCompatActivity() {
             .build()
         githubApi = retrofit.create(GitHubService::class.java)
 
-
     }
 
     //Metodo responsavel por buscar todos os repositorios do usuario fornecido
@@ -105,12 +105,13 @@ class MainActivity : AppCompatActivity() {
         val user = nomeUsuario.text.toString()
 
         githubApi.getAllRepositoriesByUser(user).enqueue(object : Callback<List<Repository>> {
+
             override fun onResponse(
                 call: Call<List<Repository>>,
                 response: Response<List<Repository>>
             ) {
                 if (response.isSuccessful) {
-                    listaRepositories.isVisible = false
+                 //   listaRepositories.isVisible = false
 
                     response.body()?.let {
                         setupAdapter(it)
@@ -131,16 +132,30 @@ class MainActivity : AppCompatActivity() {
     // Metodo responsavel por realizar a configuracao do adapter
     fun setupAdapter(list: List<Repository>) {
         /*
-            @TODO 7 - Implementar a configuracao do Adapter , construir o adapter e instancia-lo
+            @ Implementar a configuracao do Adapter , construir o adapter e instancia-lo
             passando a listagem dos repositorios
          */
 
+        repositoryAdapter = RepositoryAdapter(list)
+//        listaRepositories.apply {
+//            adapter = repoAdapter
+//        }
+
+        listaRepositories.adapter = repositoryAdapter
+
+        repositoryAdapter.btnShareLister = {
+            shareRepositoryLink(it.htmlUrl)
+        }
+
+        repositoryAdapter.carItemLister = {
+            openBrowser(it.htmlUrl)
+        }
 
     }
 
 
     // Metodo responsavel por compartilhar o link do repositorio selecionado
-    // @Todo 11 - Colocar esse metodo no click do share item do adapter
+    //  - Colocar esse metodo no click do share item do adapter
     fun shareRepositoryLink(urlRepository: String) {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -154,7 +169,7 @@ class MainActivity : AppCompatActivity() {
 
     // Metodo responsavel por abrir o browser com o link informado do repositorio
 
-    // @Todo 12 - Colocar esse metodo no click item do adapter
+    // - Colocar esse metodo no click item do adapter
     fun openBrowser(urlRepository: String) {
         startActivity(
             Intent(

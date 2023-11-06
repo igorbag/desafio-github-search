@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.igorbag.githubsearch.R
 import br.com.igorbag.githubsearch.domain.Repository
@@ -41,7 +42,9 @@ class RepositoryAdapter(private val repositories: List<Repository>) :
         holder.nomeRepo.text = repositories[position].name
 
         //click no item - abrir navegador
-        holder.nomeRepo.setOnClickListener {
+
+
+        holder.itemView.setOnClickListener {
             carItemLister(repositories[position])
         }
 
@@ -64,11 +67,13 @@ class RepositoryAdapter(private val repositories: List<Repository>) :
         //        atributo = findViewById(R.id.item_view)
         //    }
 
+        val card: CardView
         val nomeRepo: TextView
         val compartilharRepo: ImageView
 
         init {
             view.apply {
+                card = findViewById(R.id.cv_car)
                 nomeRepo = findViewById(R.id.tv_repo_name)
                 compartilharRepo = findViewById(R.id.iv_share_repo)
             }
