@@ -3,6 +3,9 @@ package br.com.igorbag.githubsearch.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.igorbag.githubsearch.R
 import br.com.igorbag.githubsearch.domain.Repository
@@ -13,7 +16,7 @@ class RepositoryAdapter(private val repositories: List<Repository>) :
     var carItemLister: (Repository) -> Unit = {}
     var btnShareLister: (Repository) -> Unit = {}
 
-    // Cria uma nova view
+    // Cria uma nova view - recuperar o layout criado
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.repository_item, parent, false)
@@ -35,14 +38,27 @@ class RepositoryAdapter(private val repositories: List<Repository>) :
         //holder.favorito.setOnClickListener {
         //    btnShareLister(repositores[position])
         //}
+
+        holder.nomeRepo.text = repositories[position].name
+
+        //click no item - abrir navegador
+
+
+        holder.itemView.setOnClickListener {
+            carItemLister(repositories[position])
+        }
+
+        holder.compartilharRepo.setOnClickListener {
+            btnShareLister(repositories[position])
+        }
     }
 
     // Pega a quantidade de repositorios da lista
-    //@TODO 9 - realizar a contagem da lista
-    override fun getItemCount(): Int = 0
+    //- realizar a contagem da lista
+    override fun getItemCount(): Int = repositories.size
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        //@TODO 10 - Implementar o ViewHolder para os repositorios
+        // - Implementar o ViewHolder para os repositorios
         //Exemplo:
         //val atributo: TextView
 
@@ -50,6 +66,18 @@ class RepositoryAdapter(private val repositories: List<Repository>) :
         //    view.apply {
         //        atributo = findViewById(R.id.item_view)
         //    }
+
+        val card: CardView
+        val nomeRepo: TextView
+        val compartilharRepo: ImageView
+
+        init {
+            view.apply {
+                card = findViewById(R.id.cv_car)
+                nomeRepo = findViewById(R.id.tv_repo_name)
+                compartilharRepo = findViewById(R.id.iv_share_repo)
+            }
+        }
 
     }
 }
